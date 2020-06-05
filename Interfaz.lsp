@@ -5,6 +5,7 @@
 ;-----------------------------------------------------
 ; Pograma principal que llama a todas las funciones
 ; necesarias.
+; es una prueba
 ;-----------------------------------------------------
 (defun interfaz()
 	(cls)
