@@ -22,7 +22,7 @@
 ;------------------------------------------------------
 (defun ventanaProductos()
 	(paralelepipedoRelleno 0 0 0 5 330 430 365)
-	;(visualizarpalabra "PRODUCTOS" 80 336 2 10)
+	(visualizarpalabra "PRODUCTOS" 80 336 2 10)
 	(paralelepipedo 5 165 430 325)
 )
 
@@ -169,7 +169,6 @@
 ;-----------------------------------------------------
 
 (defun visualizarpalabra (palabra x y tipo espaciado)
-    (cls)
     (dotimes (i (length palabra))
 	(VisualizarLetra (string (aref palabra i)) x y tipo)
 	(if (= tipo 1) (setq x (+ 52 x espaciado)) (setq x (+ 20 x espaciado))   ) 
@@ -187,7 +186,7 @@
             (VISUALIZADOR (concatenate 'string "imagenes/" letra ".bmp") x y 52)
            )
 	   ((= tipo 2) 
-            (VISUALIZADOR (concatenate 'string "imagenes/" letra "_BN.bmp") x y 20)
+            (VISUALIZADOR (concatenate 'string "imagenes/" letra "_NB.bmp") x y 20)
            )
     )
 )
