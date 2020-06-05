@@ -272,6 +272,22 @@
 		(setq cont (+ cont 1))
 	)
 
+
+; producto 1
+	;(goto-xy 1 4)
+	;(princ "01. ")
+	;(goto-xy 5 4)
+	;(princ "Producto 1")
+	;(goto-xy 18 4)
+	;(princ "10,00")
+; producto 2
+	;(goto-xy 30 4)
+	;(princ "02. ")
+	;(goto-xy 34 4)
+	;(princ "Producto 1")
+	;(goto-xy 47 4)
+	;(princ "100,00")
+
 )
 
 (defun maximo (l)
