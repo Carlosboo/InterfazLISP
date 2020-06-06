@@ -83,20 +83,32 @@
 		(rectangulo 5 3 320 32) 
 		(escribir 23 1 "[] NUMERO DE PRODUCTO:")
 		(goto-xy 25 23)
-		(setq producto (read)) 
+		(setq seleccion (read)) 
 		(borrar 23 21 20)
 		(escribir 23 1 "[] UNIDADES PRODUCTO 1:")
 		(goto-xy 27 23)
 		(setq unidades (read))
 		(borrar 23 21 20)
-		(escribir 23 1 "[] 150 DE PRODUCTO 1 (S/N):")
+		; Buscamos el producto seleccionado
+		(setq producto (encontrarProducto seleccion))
+		;(setq unidades (princ-to-string unidades))
+		(escribir 23 1 (concatenate 'string "[] DE " (car producto) " (S/N):"))
 		(goto-xy 32 23)
-		(setq unidades (read))
-		(borrar 23 21 20)
-		(escribir 23 1 "[] CONTINUAR PEDIDO (S/N):")
-		(goto-xy 30 23)
-		(setq salir (read))
-		(borrar 23 21 20)
+		(setq confirmar (read))
+
+		(if ((string-equal confirmar "s")) 
+			; Si confirma continuamos
+			(	
+				
+				(borrar 23 21 20)
+				(escribir 23 1 "[] CONTINUAR PEDIDO (S/N):")
+				(goto-xy 30 23)
+				(setq salir (read))
+				(borrar 23 21 20)	
+			)
+			; Si no no hacemos nada
+			()
+		)
 	)
 )
 
@@ -232,9 +244,9 @@
 
 	(loop
 		; Si la lista está vacia salimos
-		(if (null (car auxiliar)) (return t) nil)
+		(if (null (car auxiliar)) (return) ())
 		; Si ya no caben en la pantalla paramos
-		(if (> (+ 4 i) 20) (return t) nil)
+		(if (> (+ 4 i) 20) (return) ())
 		; Tomamos el producto actual
 		(setq producto (car auxiliar))
 
@@ -248,7 +260,7 @@
 		(princ (car (cdr Producto)))
 
 		; Si la lista está vacia salimos
-		(if (null (car auxiliar)) (return t) nil)
+		(if (null (car auxiliar)) (return) nil)
 		; Tomamos el siguiente producto
 		(setq auxiliar (cdr auxiliar))
 		; Tomamos el producto actual
@@ -278,5 +290,25 @@
 	(cond ((null (cdr l)) (car l))
 		((>= (car l) (maximo (cdr l))) (car l))
 		(t (maximo (cdr l)))
+	)
+)
+
+;-----------------------------------------------------
+; Devuelve el producto de la posición seleccionada
+;-----------------------------------------------------
+(defun encontrarProducto (posicion)
+	; volcamos los productos en una lista auxiliar
+	(setq auxiliar productos)
+	; Contador
+	(setq contador 0)
+
+	(loop
+		(if (>= contador posicion) (return producto) ())
+		; Guardamos el valor actual
+		(setq producto (car auxiliar))
+		; Tomamos el siguiente valor
+		(setq auxiliar (cdr auxiliar))
+		; Aumentamos el contador
+		(setq contador (+ contador 1))
 	)
 )
