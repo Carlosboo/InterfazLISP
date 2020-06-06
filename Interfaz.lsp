@@ -19,6 +19,7 @@
 	(detalleProductos)
 	(precioPedido)
 	(ventanaComunicacion)
+	(+ 3 4)
 )
 
 
@@ -96,19 +97,19 @@
 		(goto-xy 32 23)
 		(setq confirmar (read))
 
-		(if ((string-equal confirmar "s")) 
+		;(if ((princ "hola")) 
 			; Si confirma continuamos
-			(	
-				
-				(borrar 23 21 20)
-				(escribir 23 1 "[] CONTINUAR PEDIDO (S/N):")
-				(goto-xy 30 23)
-				(setq salir (read))
-				(borrar 23 21 20)	
-			)
+			;(	
+			;	
+			;	(borrar 23 21 20)
+			;	(escribir 23 1 "[] CONTINUAR PEDIDO (S/N):")
+		;		(goto-xy 30 23)
+		;		(setq salir (read))
+		;		(borrar 23 21 20)	
+		;	)
 			; Si no no hacemos nada
-			()
-		)
+		;	()
+		;)
 	)
 )
 
