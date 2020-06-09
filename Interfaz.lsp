@@ -96,8 +96,8 @@
 	(setq precioTotal 0)
 	; Inicializamos una lista que guardará nuestro pedido
 	; pedido -> [nombre | precio | cantidad]
-	(setq pedido "centinela")	; uso centinela para inicializar la lista,
-	; realmente no hace falta un centinela porque se puede recorrer con dotimes
+	(setq pedido "centinela")	; uso centinela unicamente para inicializar 
+	; la lista, no hace falta un centinela porque se puede recorrer con dotimes
 	(loop 
 		(if (= salir 1) (return))
 		(rectangulo 5 3 320 32) 
@@ -117,7 +117,7 @@
 		(goto-xy 28 23)
 		(setq confirmar (read))
 		(borrar 23 21 20)
-
+		; Este loop se utiliza como si fuese un if
 		(loop
 			(if (string-equal confirmar "S") () (return))
 			(visualizador (concatenate 'string "productos/" (car producto) ".bmp") 435 165 200)
@@ -329,13 +329,6 @@
 
 )
 
-(defun maximo (l)
-	(cond ((null (cdr l)) (car l))
-		((>= (car l) (maximo (cdr l))) (car l))
-		(t (maximo (cdr l)))
-	)
-)
-
 ;-----------------------------------------------------
 ; Devuelve el producto de la posición seleccionada
 ;-----------------------------------------------------
@@ -402,7 +395,8 @@
 )
 
 ;-----------------------------------------------------
-; Rellena la 'palabra' hasta 'i' caracteres
+; Rellena la 'palabra' hasta 'i' caracteres con 
+; espacios en blanco
 ;-----------------------------------------------------
 (defun rellenarString (palabra i)
 	(setq iterador (- i (length palabra)))
