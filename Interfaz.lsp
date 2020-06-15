@@ -50,8 +50,6 @@
 ;------------------------------------------------------
 (defun infoPedido()
 	(paralelepipedoRelleno 0 0 0 5 124 635 160)
-	(visualizarpalabra "PEDIDO" 20 132 2 6)
-	(visualizarpalabra "1" 190 132 2 5)
 )
 
 ;----------------------------------------------------
@@ -68,8 +66,7 @@
 ;------------------------------------------------------
 (defun precioPedido( precio )
 	(paralelepipedoRelleno 0 0 0 325 3 635 35)
-	(visualizarpalabra "TOTAL" 332 10 2 5)
-	(visualizarpalabra (princ-to-string precio) 500 10 2 5)
+	(visualizarpalabra (concatenate 'string "TOTAL#" (princ-to-string precio) "#####") 337 10 2 5)
 )
 
 ;----------------------------------------------------
@@ -101,41 +98,65 @@
 	(loop 
 		(if (= salir 1) (return))
 		(rectangulo 5 3 320 32) 
-		(escribir 23 1 "[] NUMERO DE PRODUCTO:")
-		(goto-xy 25 23)
-		(setq seleccion (read)) 
-		(borrar 23 21 20)
-		(escribir 23 1 "[] UNIDADES PRODUCTO 1:")
-		(goto-xy 25 23)
-		(setq unidades (read))
-		(borrar 23 1 40)
+		(setq npedido 0)
+		(loop
+			(escribirMenu "INSERTE UN NUMERO DE PEDIDO: ")
+			(setq npedido (read))
+			; Chequeamos que introduce un numero
+			(if (typep npedido 'integer) 
+				(return)
+				()
+			)
+		)
+		; Pintamos por pantalla el numero de producto
+		(visualizarpalabra (concatenate 'string "PEDIDO#" (princ-to-string npedido) "################") 14 132 2 6)
+		; Preguntamos el producto que desea
+		(setq seleccion 0)
+		(loop
+			(escribirMenu "[] NUMERO DE PRODUCTO: ")
+			(setq seleccion (read)) 
+			; Si no es un integer en el rango correcto no vale
+			(if (typep seleccion 'integer) 
+				(if (AND (<= seleccion 20) (> seleccion 0)) (return))	
+				()
+			)
+		)
+		; Preguntamos cuantas unidades de dicho producto
+		(setq unidades 0)
+		(loop
+			(escribirMenu "[] UNIDADES PRODUCTO 1: ")
+			(setq unidades (read)) 
+			; Si no es un integer en el rango correcto no vale
+			(if (typep unidades 'integer) 
+				(return)	
+				()
+			)
+		)
 		; Buscamos el producto seleccionado
 		(setq producto (encontrarProducto seleccion))
-		(escribir 23 1 "[] ")
-		(escribir 23 4 unidades)
-		(escribir 23 5 (concatenate 'string " DE " (car producto) " (S/N):"))
-		(goto-xy 28 23)
+		(escribirMenu (concatenate 'string "[] " (princ-to-string unidades) " DE " (car producto) " (S/N): "))
 		(setq confirmar (read))
-		(borrar 23 21 20)
 		; Este loop se utiliza como si fuese un if
 		(loop
 			(if (string-equal confirmar "S") () (return))
+			; Mostramos imagen del producto
 			(visualizador (concatenate 'string "productos/" (car producto) ".bmp") 435 165 200)
 			; Añadimos el precio al total
 			(setq precioTotal (+ precioTotal (* (car (cdr producto)) unidades)))
 			(precioPedido precioTotal)
-			; Almacenamos los pedidos
-			(setq elementopedido (concatenate 'string "\t  " (rellenarString (car producto) 15) "\t" (princ-to-string unidades) "\t\t  " (princ-to-string (* (car (cdr producto)) unidades))))
+			; Almacenamos los pedidos de la misma manera que los imprimiremos en el fichero
+			; \t producto \t unidades \t precio
+			(setq elementopedido (concatenate 'string "\t  " (rellenarString (car producto) 15) 
+			"\t" (princ-to-string unidades) "\t\t  " (princ-to-string (* (car (cdr producto)) unidades))))
+			; Añadimos al array de pedidos
 			(setq pedido (cons elementopedido pedido))
 			; Escribimos el producto en la pantalla
 			(escribirDetalleProductos x y producto unidades)
 			; Con este if controlamos que los productos no se pinten 
 			; unos encima de otros
 			(if(> x 50) (setq x 2 y (+ 1 y)) (setq x (+ x 25)))
-			(escribir 23 1 "[] CONTINUAR PEDIDO (S/N):")
-			(goto-xy 28 23)
+			(escribirMenu "[] CONTINUAR PEDIDO (S/N): ")
 			(setq continuar (read))
-			(borrar 23 21 20)
 			(if (string-equal continuar "n") () (return))
 			(setq x 2)
 			(borrarVentanaProductos)
@@ -148,7 +169,6 @@
 			; El pedido vuelve a estar vacio
 			(setq pedido "centinela")
 			; Volvemos a la foto inicial
-			(visualizarpalabra (princ-to-string contadorPedido) 190 132 2 5)
 			(visualizador "imagenes/LogoPractica.bmp" 435 165 200)	
 			(return t)
 		)
@@ -177,10 +197,6 @@
 	(goto-xy columna linea)
 	(princ TEXTO)
 )
-
-
-
-
 
 ;-----------------------------------------------------
 ; Función que visualiza en pantalla la imagen dada por
@@ -404,4 +420,13 @@
 			(setq palabra (concatenate 'string palabra " "))
 	)
     (return-from rellenarString palabra)
+)
+
+;-----------------------------------------------------
+; Borra el texto anterior y escribe el texto 
+; indicado en el menu
+;-----------------------------------------------------
+(defun escribirMenu (texto)
+		(borrar 23 21 20)
+		(escribir 23 1 texto)
 )
