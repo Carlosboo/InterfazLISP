@@ -95,11 +95,12 @@
 	; pedido -> [nombre | precio | cantidad]
 	(setq pedido "centinela")	; uso centinela unicamente para inicializar 
 	; la lista, no hace falta un centinela porque se puede recorrer con dotimes
+	(setq continuar "N")
 	(loop 
 		(if (= salir 1) (return))
 		(rectangulo 5 3 320 32) 
-		(setq npedido 0)
 		(loop
+			(if (string-equal continuar "N") () (return))
 			(escribirMenu "INSERTE UN NUMERO DE PEDIDO: ")
 			(setq npedido (read))
 			; Chequeamos que introduce un numero
